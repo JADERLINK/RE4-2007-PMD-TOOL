@@ -93,6 +93,10 @@ No blender para carregar o modelo .SMD com as texturas, em um novo "projeto", im
 A escala dos arquivo Pmd da pasta xfile, são armazenado de forma a ser 100x menor que a escala real do jogo.
 <br> E dos arquivos Pmd da pasta xscr são 1000x menores que a escala real do jogo (porem também tem outras escalas internas).
 
+## Código de terceiro:
+
+[ObjLoader by chrisjansson](https://github.com/chrisjansson/ObjLoader):
+Encontra-se no RE4_PMD_Repack, código modificado, as modificações podem ser vistas aqui: [link](https://github.com/JADERLINK/ObjLoader).
 
 **At.te: JADERLINK**
 <br>2023-10-02
