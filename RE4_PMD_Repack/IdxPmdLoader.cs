@@ -173,7 +173,7 @@ namespace RE4_PMD_Repack
             {
                 try
                 {
-                    idx.UseMaterialLines = bool.Parse(pair["IGNOREMATERIALLINES"].Trim());
+                    idx.UseMaterialLines = bool.Parse(pair["USEMATERIALLINES"].Trim());
                 }
                 catch (Exception)
                 {

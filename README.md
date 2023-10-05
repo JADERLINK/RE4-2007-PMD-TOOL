@@ -6,6 +6,11 @@ Translate from Portuguese Brazil
 Esses programas são uma versão refeita da versão do "magnum29" do programa "Re4 PMD to SMD model exporter" que foi escrito em "perl".
 <br> A maior diferença com a verão dele, é a possibilidade da compressão de vértices, possibilitando arquivos .pmd menores.
 
+**Update B.1.0.0.1**
+
+Corrigido um bug no repack no qual a variavel "UseMaterialLines" do .idxpmd era sempre falsa, impossibilitando o uso do campo "MaterialLine".
+
+
  ## RE4_PMD_Decoder.exe
 
  Decodifica e cria um .obj/.smd do pmd. São criados os arquivos .txt2 .obj .smd .mtl e .idxpmd

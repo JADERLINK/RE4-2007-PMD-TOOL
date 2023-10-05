@@ -9,7 +9,7 @@ namespace RE4_PMD_Repack
 {
     class Program
     {
-        public const string VERSION = "B.1.0.0.0";
+        public const string VERSION = "B.1.0.0.1";
 
         static void Main(string[] args)
         {
