@@ -8,7 +8,7 @@ Esses programas são uma versão refeita da versão do "magnum29" do programa "R
 
 **Update B.1.0.0.1**
 
-Corrigido um bug no repack no qual a variavel "UseMaterialLines" do .idxpmd era sempre falsa, impossibilitando o uso do campo "MaterialLine".
+Corrigido um bug no repack no qual a variável "UseMaterialLines" do .idxpmd era sempre falsa, impossibilitando o uso do campo "MaterialLine".
 
 
  ## RE4_PMD_Decoder.exe
@@ -103,5 +103,8 @@ A escala dos arquivo Pmd da pasta xfile, são armazenado de forma a ser 100x men
 [ObjLoader by chrisjansson](https://github.com/chrisjansson/ObjLoader):
 Encontra-se no RE4_PMD_Repack, código modificado, as modificações podem ser vistas aqui: [link](https://github.com/JADERLINK/ObjLoader).
 
+## RE4_PMD.hexpat
+No source code, disponibilizei o arquivo RE4_PMD.hexpat, que é um arquivo para ser usado no programa "[ImHex](https://imhex.werwolv.net/)", serve para visualizar a estrutura do arquivo Pmd.
+
 **At.te: JADERLINK**
-<br>2023-10-02
+<br>2023-10-05
