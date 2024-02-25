@@ -67,7 +67,7 @@ namespace RE4_2007_PMD_REPACK
                             temp.ID = ID;
                             BoneDic.Add(ID, temp);
 
-                            if (ID > boneCount)
+                            if (ID >= boneCount)
                             {
                                 boneCount = ID + 1;
                             }

@@ -6,6 +6,10 @@ Translate from Portuguese Brazil
 Esses programas são uma versão refeita da versão do "magnum29" do programa "Re4 PMD to SMD model exporter" que foi escrito em "perl".
 <br> A maior diferença com a verão dele, é a possibilidade da compressão de vértices, possibilitando arquivos .pmd menores.
 
+**Update B.1.0.1.2b**
+
+Corrigido erro no código ao fazer a leitura do arquivo .idxpmdbone no repack;
+
 **Update B.1.0.1.2**
 
 Update de melhorias, agora serão criados os arquivos .idxpmdmaterial e .idxpmdbone; 
