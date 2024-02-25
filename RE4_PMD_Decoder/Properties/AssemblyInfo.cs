@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // As informações gerais sobre um assembly são controladas por
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
 // associadas a um assembly.
-[assembly: AssemblyTitle("RE4_PMD_Decoder")]
-[assembly: AssemblyDescription("RE4_PMD_Decoder")]
+[assembly: AssemblyTitle("RE4_2007_PMD_EXTRACT")]
+[assembly: AssemblyDescription("RE4_2007_PMD_EXTRACT by JADERLINK")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RE4_PMD_Decoder")]
-[assembly: AssemblyCopyright("Copyright © JADERLINK 2023")]
+[assembly: AssemblyCompany("JADERLINK")]
+[assembly: AssemblyProduct("RE4_2007_PMD_EXTRACT")]
+[assembly: AssemblyCopyright("Copyright © JADERLINK 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

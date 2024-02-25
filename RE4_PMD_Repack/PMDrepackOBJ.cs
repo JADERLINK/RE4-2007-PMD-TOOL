@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 using System.IO;
 
 
-namespace RE4_PMD_Repack
+namespace RE4_2007_PMD_REPACK
 {
-    public static partial class PMDrepack
+    public static class PMDrepackOBJ
     {
-        public static void RepackOBJ(string idxPmdPath, string objPath, string mtlPath, string pmdPath)
+        public static void RepackOBJ(IdxPmd idxPmd, string objPath,
+            out IntermediaryStructure intermediaryStructure,
+            out string[] ModelMaterialsArr)
         {
-
-            // carrega o arquivo .idxPmd
-            StreamReader idxFile = new StreamReader(new FileInfo(idxPmdPath).OpenRead(), Encoding.ASCII);
-            IdxPmd idxPmd = IdxPmdLoader.Loader(idxFile);
-
             // load .obj file
             var objLoaderFactory = new ObjLoader.Loader.Loaders.ObjLoaderFactory();
             var objLoader = objLoaderFactory.Create();
@@ -143,26 +140,13 @@ namespace RE4_PMD_Repack
                 startStructure.CompressAllFaces();
             }
 
-            //arruma o Material
-            var MtlMaterials = LoadMtlMaterials(mtlPath, idxPmd.UseMtlFile);
-            var UseMaterial = GetMaterials(ModelMaterials.ToArray(), idxPmd.MaterialLines, MtlMaterials, idxPmd.UseMtlFile, idxPmd.UseMaterialLines);
-
-            PrintTextureNamesInConsole(UseMaterial.Values.ToArray());
+            ModelMaterialsArr = ModelMaterials.ToArray();
 
             // estrutura intermediaria
-            IntermediaryStructure intermediaryStructure = MakeIntermediaryStructure(startStructure);
-
-            // estrutura final
-            FinalStructure finalStructure = MakeFinalStructure(intermediaryStructure, GetIntermediaryNodeGroups(idxPmd.NodeGroups) ,idxPmd.IsScenarioPmd);
-
-            //converte a classe
-            FinalBoneLine[] boneLines = GetBoneLines(idxPmd.BoneLines);
-
-            //finaliza e cria o arquivo pmd
-            MakeFinalPmdFile(pmdPath, finalStructure, boneLines, UseMaterial);
+            intermediaryStructure = PMDrepackIntermediary.MakeIntermediaryStructure(startStructure);
         }
 
-        private static FinalBoneLine[] GetBoneLines(PmdBoneLine[] boneLines) 
+        public static FinalBoneLine[] GetBoneLines(PmdBoneLine[] boneLines) 
         {
             FinalBoneLine[] finalBoneLine = new FinalBoneLine[boneLines.Length];
 

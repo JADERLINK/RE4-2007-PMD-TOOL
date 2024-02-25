@@ -6,21 +6,23 @@ Translate from Portuguese Brazil
 Esses programas são uma versão refeita da versão do "magnum29" do programa "Re4 PMD to SMD model exporter" que foi escrito em "perl".
 <br> A maior diferença com a verão dele, é a possibilidade da compressão de vértices, possibilitando arquivos .pmd menores.
 
-**Update B.1.0.0.1**
+**Update B.1.0.1.2**
 
-Corrigido um bug no repack no qual a variável "UseMaterialLines" do .idxpmd era sempre falsa, impossibilitando o uso do campo "MaterialLine".
+Update de melhorias, agora serão criados os arquivos .idxpmdmaterial e .idxpmdbone; 
+<br>agora, ao fazer repack a ordem das meches é definida pelo nome do material/grupo;
 
-
- ## RE4_PMD_Decoder.exe
+ ## RE4_2007_PMD_EXTRACT.exe
 
  Decodifica e cria um .obj/.smd do pmd. São criados os arquivos .txt2 .obj .smd .mtl e .idxpmd
 
- * sendo os arquivos txt2 arquivos informativos que divide o pmd por partes para melhor visualização, que por padrão não são gerados;
- * .MTL: arquivo que acompanha o .obj, serve para carregar as texturas nos modelos, as texturas são arquivos .TGA e devem ficar na mesma pasta que o arquivo pmd/obj;
- * .IDXPMD: é o arquivo que contem o conteúdo que não esta no .obj ou no .smd, mas é necessário para recompilar o .PMD; (veja sobre o conteúdo do mesmo mais abaixo)
- * .OBJ e .SMD: contem o conteúdo do modelo 3d.
+* Sendo os arquivos txt2 arquivos informativos que divide o pmd por partes para melhor visualização, que por padrão não são gerados;
+* .MTL: arquivo que acompanha o .obj, serve para carregar as texturas nos modelos, as texturas são arquivos .TGA e devem ficar na mesma pasta que o arquivo pmd/obj;
+* .IDXPMD: é o arquivo que contém o conteúdo que não está no .obj ou no .smd, mas é necessário para recompilar o .PMD; (veja sobre o conteúdo do mesmo mais abaixo);
+* .OBJ e .SMD: contem o conteúdo do modelo 3d;
+* .idxpmdbone: contém o conteúdo dos bones, é usado somente ao fazer repack com o arquivo .OBJ;
+* .idxpmdmaterial: arquivo que contém o material do modelo, pode ser usado como alternativa ao .mtl, para esse arquivo ser usado tem que ser habilitado no .idxpmd; 
 
- **RE4_PMD_Decoder.txt**
+ **RE4_2007_PMD_EXTRACT.txt**
 
  Esse arquivo encontra junto com a pasta do programa, é um arquivo de configurações para o programa, veja a baixo quais são elas:
  <br>Nota: são opções de "true" ou "false";
@@ -29,8 +31,9 @@ Corrigido um bug no repack no qual a variável "UseMaterialLines" do .idxpmd era
  * _ReplaceMaterialNameByTextureName_: por padrão o nome dos materiais é nomeado como "PMD_MATERIAL_000" onde 000 é um numero, porem com essa opção ativa, o nome do material vai ser o nome da textura usada, ex: myTexture.tga
  (veja mais abaixo as diferença sobre isso)
  * _UseColorsInObjFile_: com essa opção ativa, no arquivo .obj nos parâmetros dos vértices, vai ter as cores de cada vértice, porem normalmente os editores 3D não tem suporte para isso.
+ * _EnableUseIdxPmdMaterial_: variável que define a variável UseIdxPmdMaterial dentro do arquivo .idxpmd;
 
-## RE4_PMD_Repack.exe
+## RE4_2007_PMD_REPACK.exe
 
 Cria um novo arquivo .PMD a partir do conteúdo do .IDXPMD e .OBJ ou .SMD (e também pode usar o .MTL):
 
@@ -42,51 +45,52 @@ Cria um novo arquivo .PMD a partir do conteúdo do .IDXPMD e .OBJ ou .SMD (e tam
 
 Segue abaixo a lista de comando presente no arquivo .idxpmd, o // são comentários
 
-// define que é para comprimir as vertices, recomendado manter como "True"
-<br>CompressVertices:True
-<br>//define se é um arquivo de cenário, so é true se for um arquivo da pasta "xscr"
-<br>IsScenarioPmd:False
-<br>
-<br>// conjunto de dados sobre o bone, só é usado para o arquivo .obj
-<br>
-<br>// para o arquivo obj, define qual bone será usado pela malha/mesh
-<br>ObjFileUseBone:0
-<br>// quantidade de bones
-<br>BonesCount:69
-<br>//o "0" é o id do bone, e o campo a baixo é o nome do bone
-<br>BoneLine_0_Nome:Scene_Root
-<br>// parent do bone
-<br>BoneLine_0_Parent:-1
-<br>//conjunto de 26 campos float
-<br>BoneLine_0_Data: //campos omitidos nesse exemplo
-<br>/ fim do conjunto de bones
-<br>
-<br>// conjunto de dados sobre os grupos, define o nome dos grupos, e quais materiais faz parte de cada grupo
-<br>
-<br>// quantidade de grupos
-<br>GroupsCount:23
-<br>id do grupo:nome do grupo?id do SkeletonIndex?conjunto de materiais que fazem parte do grupo
-Group_0:pl000a_Jacket_pl000a_Jacket_01_obj?43?PMD_MATERIAL_000
-<br>
-<br> //define se vai carregar as cores dos vértices do arquivo .obj
-<br> LoadColorsFromObjFile: False
-<br>
-<br>// define se vai carregar e usar o arquivo .mtl, no qual é onde vai pegar o nome da textura,(é usado no arquivo .obj e .smd), caso for "false", o nome da textura vai ser o nome do material.
-<br>UseMtlFile: True
-<br>
-<br>// define se sera usado a tabela abaixo de materiais (é definido como "false" por padrão)
-<br>UseMaterialLines: False
-<br>
-<br>//lista de materiais
-<br>//MaterialLine?nome do material?no da textura usada: conteúdo de 17 float e 1 int (são parâmetro da textura)
-<br>MaterialLine?PMD_MATERIAL_000?pl0011.tga: //conteúdo omitido
-<br> **Fim do arquivo .idxpmd**
+```
+// define que é para comprimir os vértices, recomendado manter como "True";
+CompressVertices:True
 
-**Sobre como é defindo o nome da textura usada**
-<br>O nome da textura é obtida considerando a seguinte ordem:
-* caso UseMaterialLines for "true", ele vai pegar o nome da textura a partir de MaterialLine caso tenho o nome do material listado.
-* caso UseMtlFile for "true" o nome da textura vai vir do arquivo .mtl
-* caso se tudo acima for "false" ou invalido, o nome da textura vai ser o próprio nome do material
+//define se é um arquivo de cenário, só é true se for um arquivo da pasta "xscr";
+IsScenarioPmd:False
+
+//define qual Id do bone vai ser atribuído aos vértices, isso para o arquivo .obj;
+ObjFileUseBone:0
+
+//define se vai carregar as cores dos vértices do arquivo .obj;
+LoadColorsFromObjFile: False
+
+// define se vai carregar e usar o arquivo .mtl, no qual é onde vai pegar o nome da textura, (é usado no arquivo .obj e .smd), caso for "false", o nome da textura vai ser o nome do material.
+UseMtlFile: True
+
+// define se será usado o arquivo .idxpmdmaterial, para atribuir os materiais/texturas;
+UseIdxPmdMaterial: False
+
+// Conjunto de dados sobre os grupos, define o nome dos grupos, e quais materiais fazem parte de cada grupo;
+
+// define se vai ser usado nomes de grupos customizados;
+//UseCustomGroups:False
+
+// quantidade de grupos
+GroupsCount:23
+
+//id do grupo:nome do grupo?id do SkeletonIndex?conjunto de materiais que fazem parte do grupo
+Group_0:pl000a_Jacket_pl000a_Jacket_01_obj?43?PMD_MATERIAL_000
+```
+
+ ## arquivo .idxpmdbone
+
+Contém o conteúdo dos bones, é usado somente ao fazer repack com o arquivo .OBJ;
+<br>(Colocar aqui informativo sobre o arquivo)
+
+## arquivo .idxpmdmaterial
+
+Arquivo que contém o material do modelo, pode ser usado como alternativa ao .mtl, para esse arquivo ser usado, tem que ser habilitado no .idxpmd o campo "UseIdxPmdMaterial";
+<br>(Colocar aqui informativo sobre o arquivo)
+
+## Sobre como é defindo o nome da textura usada
+O nome da textura é obtido considerando a seguinte ordem:
+* Caso "UseIdxPmdMaterial" for "true", ele vai pegar o nome da textura a partir do arquivo .idxpmdmaterial caso tenha o nome do material listado;
+* Caso "UseMtlFile" for "true" o nome da textura vai vir do arquivo .mtl;
+* Caso, se tudo acima for "false" ou inválido, o nome da textura vai ser o próprio nome do material;
 
 ## Ordem dos bones no arquivo .SMD
 Para arrumar a ordem dos ids dos bones nos arquivos smd, depois de serem exportados do blender ou outro software de edição de modelos usar o programa: GC_GC_Skeleton_Changer.exe (procure o programa no fórum do re4)
@@ -107,4 +111,4 @@ Encontra-se no RE4_PMD_Repack, código modificado, as modificações podem ser v
 No source code, disponibilizei o arquivo RE4_PMD.hexpat, que é um arquivo para ser usado no programa "[ImHex](https://imhex.werwolv.net/)", serve para visualizar a estrutura do arquivo Pmd.
 
 **At.te: JADERLINK**
-<br>2023-10-05
+<br>2024-02-25

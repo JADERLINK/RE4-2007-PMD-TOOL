@@ -6,82 +6,101 @@ using System.Threading.Tasks;
 using System.IO;
 using PMD_API;
 
-namespace RE4_PMD_Decoder
+namespace RE4_2007_PMD_EXTRACT
 {
     public static class Program
     {
-        public const string VERSION = "B.1.0.0.0";
+        public const string VERSION = "B.1.0.1.2";
 
         static void Main(string[] args)
         {
-            Console.WriteLine("## RE4_PMD_Decoder ##");
-            Console.WriteLine($"## Version {VERSION} ##");
-            Console.WriteLine("## By JADERLINK ##");
-            Console.WriteLine("## Created from Re4 PMD to SMD model exporter by magnum29 (perl) ##");
+            Console.WriteLine("# github.com/JADERLINK/RE4-2007-PMD-TOOL");
+            Console.WriteLine("# youtube.com/@JADERLINK");
+            Console.WriteLine("# RE4_2007_PMD_TOOL (EXTRACT) By JADERLINK");
+            Console.WriteLine($"# Version {Program.VERSION}");
+            Console.WriteLine("# Created from Re4 PMD to SMD model exporter by magnum29 (perl)");
 
-            if (args.Length >= 1 && File.Exists(args[0]) && new FileInfo(args[0]).Extension.ToUpper() == ".PMD")
+            if (args.Length == 0)
+            {
+                Console.WriteLine("For more information read:");
+                Console.WriteLine("https://github.com/JADERLINK/RE4-2007-PMD-TOOL");
+                Console.WriteLine("Press any key to close the console.");
+                Console.ReadKey();
+            }
+            else if (args.Length >= 1 && File.Exists(args[0]))
             {
                 FileInfo fileInfo = new FileInfo(args[0]);
-                string baseDiretory = fileInfo.DirectoryName + "\\";
 
-                ConfigFile configFile = new ConfigFile();
-
-                string configFilePath = null;
-                string configFileName = "RE4_PMD_Decoder.txt";
-
-                if (File.Exists(baseDiretory + configFileName))
+                if (fileInfo.Extension.ToUpper() == ".PMD")
                 {
-                    configFilePath = baseDiretory + configFileName;
-                }
-                else if (File.Exists(AppContext.BaseDirectory + configFileName))
-                {
-                    configFilePath = AppContext.BaseDirectory + configFileName;
-                }
+                    string baseDiretory = fileInfo.DirectoryName + "\\";
 
-                if (configFilePath != null)
-                {
+                    ConfigFile configFile = new ConfigFile();
+
+                    string configFilePath = null;
+                    string configFileName = "RE4_2007_PMD_EXTRACT.txt";
+
+                    if (File.Exists(baseDiretory + configFileName))
+                    {
+                        configFilePath = baseDiretory + configFileName;
+                    }
+                    else if (File.Exists(AppContext.BaseDirectory + configFileName))
+                    {
+                        configFilePath = AppContext.BaseDirectory + configFileName;
+                    }
+
+                    if (configFilePath != null)
+                    {
+                        try
+                        {
+                            configFile = ConfigFile.LoadConfigFile(configFilePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error loading file \"{configFileName}\": " + ex);
+                        }
+                    }
+
+                    Console.WriteLine("EnableDebugFiles: " + configFile.EnableDebugFiles);
+                    Console.WriteLine("ReplaceMaterialNameByTextureName: " + configFile.ReplaceMaterialNameByTextureName);
+                    Console.WriteLine("EnableUseIdxPmdMaterial: " + configFile.EnableUseIdxPmdMaterial);
+                    Console.WriteLine("UseColorsInObjFile: " + configFile.UseColorsInObjFile);
+
+                    Console.WriteLine(fileInfo.Name);
                     try
                     {
-                        configFile = ConfigFile.LoadConfigFile(configFilePath);
+
+                        string baseName = fileInfo.Name.Remove(fileInfo.Name.Length - fileInfo.Extension.Length, fileInfo.Extension.Length);
+
+                        PMD pmd = PmdDecoder.GetPMD(args[0]);
+
+                        OutputIdxPmd.IdxPmdCreate(pmd, baseDiretory, baseName, configFile);
+                        OutputIdxPmdBone.IdxPmdBoneCreate(pmd, baseDiretory, baseName);
+                        OutputFiles.SmdCreate(pmd, baseDiretory, baseName, configFile);
+                        OutputFiles.ObjCreate(pmd, baseDiretory, baseName, configFile);
+                        var mat = MaterialParser.Parser(pmd, configFile);
+                        OutputMtl.MtlCreate(mat, baseDiretory, baseName);
+                        OutputIdxPmdMaterial.IdxPmdMaterialCreate(mat, baseDiretory, baseName);
+
+                        if (configFile.EnableDebugFiles)
+                        {
+                            OutputDebug.DebugInformation(pmd, fileInfo.FullName);
+                        }
+
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error loading file \"{configFileName}\": " + ex);
+                        Console.WriteLine("Error: " + ex);
                     }
                 }
-
-                Console.WriteLine("EnableDebugFiles: " + configFile.EnableDebugFiles);
-                Console.WriteLine("ReplaceMaterialNameByTextureName: " + configFile.ReplaceMaterialNameByTextureName);
-                Console.WriteLine("UseColorsInObjFile: " + configFile.UseColorsInObjFile);
-
-                Console.WriteLine(args[0]);
-                try
+                else
                 {
-                  
-                    string baseName = fileInfo.Name.Remove(fileInfo.Name.Length - fileInfo.Extension.Length, fileInfo.Extension.Length);
-                   
-                    PMD pmd = PmdDecoder.GetPMD(args[0]);
-
-                    OutputFiles.IdxPmdCreate(pmd, baseDiretory, baseName, configFile);
-                    OutputFiles.SmdCreate(pmd, baseDiretory, baseName, configFile);
-                    OutputFiles.ObjCreate(pmd, baseDiretory, baseName, configFile);
-                    OutputFiles.MtlCreate(pmd, baseDiretory, baseName, configFile);
-
-                    if (configFile.EnableDebugFiles)
-                    {
-                        OutputFiles.DebugInformation(pmd, fileInfo.FullName);
-                    }
-                   
+                    Console.WriteLine("Wrong file");
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex);
-                }
-
             }
             else
             {
-                Console.WriteLine("No arguments or invalid file");
+                Console.WriteLine("The file does not exist");
             }
 
             Console.WriteLine("End");

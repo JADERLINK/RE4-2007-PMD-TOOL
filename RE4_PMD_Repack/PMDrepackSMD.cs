@@ -5,21 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace RE4_PMD_Repack
+namespace RE4_2007_PMD_REPACK
 {
-    public static partial class PMDrepack
+    public static class PMDrepackSMD
     {
-        public static void RepackSMD(string idxPmdPath, string smdPath, string mtlPath, string pmdPath)
+        public static void RepackSMD(IdxPmd idxPmd, string smdPath, 
+            out IntermediaryStructure intermediaryStructure, 
+            out string[] ModelMaterialsArr,
+            out FinalBoneLine[] bones)
         {
-
-            // carrega o arquivo .idxPmd
-            StreamReader idxFile = new StreamReader(new FileInfo(idxPmdPath).OpenRead(), Encoding.ASCII);
-            IdxPmd idxPmd = IdxPmdLoader.Loader(idxFile);
-
             //carrega o arquivo smd;
             StreamReader stream = new StreamReader(new FileInfo(smdPath).OpenRead(), Encoding.ASCII);
             SMD_READER_API.SMD smd = SMD_READER_API.SmdReader.Reader(stream);
-
 
             //lista de materiais usados no modelo
             HashSet<string> ModelMaterials = new HashSet<string>();
@@ -154,31 +151,19 @@ namespace RE4_PMD_Repack
 
             }
 
-
             // faz a compressão das vertives
             if (idxPmd.CompressVertices == true)
             {
                 startStructure.CompressAllFaces();
             }
 
-            //arruma o Material
-            var MtlMaterials = LoadMtlMaterials(mtlPath, idxPmd.UseMtlFile);
-            var UseMaterial = GetMaterials(ModelMaterials.ToArray(), idxPmd.MaterialLines, MtlMaterials, idxPmd.UseMtlFile, idxPmd.UseMaterialLines);
-
-            PrintTextureNamesInConsole(UseMaterial.Values.ToArray());
+            ModelMaterialsArr = ModelMaterials.ToArray();
 
             // estrutura intermediaria
-            IntermediaryStructure intermediaryStructure = MakeIntermediaryStructure(startStructure);
-
-            // estrutura final
-            FinalStructure finalStructure = MakeFinalStructure(intermediaryStructure, GetIntermediaryNodeGroups(idxPmd.NodeGroups), idxPmd.IsScenarioPmd);
-
+            intermediaryStructure = PMDrepackIntermediary.MakeIntermediaryStructure(startStructure);
 
             //FinalBoneLine é usado os bones do arquivo smd
-            FinalBoneLine[] bones = GetBoneLines(smd);
-
-            //finaliza e cria o arquivo pmd
-            MakeFinalPmdFile(pmdPath, finalStructure, bones, UseMaterial);
+            bones = GetBoneLines(smd);
         }
 
         private static FinalBoneLine[] GetBoneLines(SMD_READER_API.SMD smd)

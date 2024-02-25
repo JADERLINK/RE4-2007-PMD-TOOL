@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RE4_PMD_Repack
+namespace RE4_2007_PMD_REPACK
 {
-    public static partial class PMDrepack
+    public static class PMDrepackIntermediary
     {
-        private static IntermediaryStructure MakeIntermediaryStructure(StartStructure startStructure)
+        public static IntermediaryStructure MakeIntermediaryStructure(StartStructure startStructure)
         {
             IntermediaryStructure intermediary = new IntermediaryStructure();
 

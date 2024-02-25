@@ -7,205 +7,15 @@ using System.IO;
 using PMD_API;
 using System.Globalization;
 
-namespace RE4_PMD_Decoder
+namespace RE4_2007_PMD_EXTRACT
 {
     public static class OutputFiles
     {
-        private const string PMD_MATERIAL_NULL = "PMD_MATERIAL_NULL.tga";
-        private const string PMD_MATERIAL_ = "PMD_MATERIAL_";
-
-        public static void DebugInformation(PMD pmd, string File)
-        {
-
-            StreamWriter arq = new StreamWriter(File + ".info.txt2", false);
-
-            arq.WriteLine("## RE4_PMD_Decoder ##");
-            arq.WriteLine($"## Version {Program.VERSION} ##");
-
-            arq.WriteLine(File);
-         
-            arq.WriteLine();
-            arq.WriteLine("NodeGroupNames:");
-            for (int i = 0; i < pmd.NodeGroupNames.Length; i++)
-            {
-                arq.WriteLine(i + ": " + pmd.NodeGroupNames[i]);
-            }
-
-            arq.WriteLine();
-            arq.WriteLine("TextureNames:");
-            for (int i = 0; i < pmd.Materials.Length; i++)
-            {
-                arq.WriteLine(i + ": " + pmd.Materials[i].TextureName);
-            }
-
-            arq.WriteLine();
-            arq.WriteLine("TextureData:");
-            for (int i = 0; i < pmd.Materials.Length; i++)
-            {
-                arq.Write((i + ":").PadLeft(6));
-                for (int it = 0; it < pmd.Materials[i].TextureData.Length; it++)
-                {
-                    arq.Write(pmd.Materials[i].TextureData[it].ToString("F6").PadLeft(10) + " ");
-                }
-                arq.Write(pmd.Materials[i].TextureUnknown.ToString("D").PadLeft(10) + " ");
-                arq.Write("\r\n");
-            }
-
-            arq.WriteLine();
-            arq.WriteLine("SkeletonBoneNames:");
-
-            for (int i = 0; i < pmd.SkeletonBoneNames.Length; i++)
-            {
-                arq.WriteLine(i + ": " + pmd.SkeletonBoneNames[i]);
-            }
-
-            arq.WriteLine();
-            arq.WriteLine("SkeletonBoneParents:");
-            for (int i = 0; i < pmd.SkeletonBoneParents.Length; i++)
-            {
-                arq.Write(i + ": " + pmd.SkeletonBoneParents[i] + "\r\n");
-            }
-
-      
-            arq.Write("\r\nSkeletonBoneData:\r\n");
-            arq.Write("id".PadLeft(12));
-            for (int i = 0; i < 26; i++)
-            {
-                arq.Write((i).ToString().PadLeft(12));
-                if (i == 13)
-                {
-                    arq.Write("\r\n");
-                }
-            }
-            arq.Write("\r\n");
-
-            for (int i = 0; i < pmd.SkeletonBoneData.Length; i++)
-            {
-                arq.Write((i).ToString().PadLeft(12));
-                for (int iS = 0; iS < pmd.SkeletonBoneData[i].Length; iS++)
-                {
-                    arq.Write(pmd.SkeletonBoneData[i][iS].ToString("F6").PadLeft(12));
-                    if (iS == 13)
-                    {
-                        arq.Write("\r\n");
-                    }
-                }
-                arq.Write("\r\n");
-            }
-
-            if (pmd.ObjRefBones.Count != 0)
-            {
-                var keys = pmd.ObjRefBones.Keys.ToArray();
-                arq.WriteLine();
-                arq.WriteLine("ObjBones:");
-                for (int i = 0; i < keys.Length; i++)
-                {
-                    arq.WriteLine(keys[i] + ": " + pmd.ObjRefBones[keys[i]]);
-                }
-            }
-
-            arq.WriteLine();
-            arq.WriteLine("Nodes:");
-            for (int i = 0; i < pmd.Nodes.Length; i++)
-            {
-                arq.WriteLine();
-                arq.WriteLine("Node[" + i + "]:");
-                arq.WriteLine("ObjId:" + pmd.Nodes[i].ObjNodeId);
-                arq.WriteLine("SkeletonIndex:" + pmd.Nodes[i].SkeletonIndex);
-                
-
-                if (pmd.Nodes[i].Bones.Length != 0)
-                {
-                    arq.WriteLine();
-                    arq.WriteLine("Bones:");
-                    for (int ib = 0; ib < pmd.Nodes[i].Bones.Length; ib++)
-                    {
-                        arq.Write((i + "_" + (ib * 3) + ": ").PadLeft(10) + " ");
-
-                        arq.Write(("[" + pmd.Nodes[i].Bones[ib].boneId + "]").PadLeft(5) + " ");
-
-                        for (int iu = 0; iu < pmd.Nodes[i].Bones[ib].unknown.Length; iu++)
-                        {
-                            arq.Write(pmd.Nodes[i].Bones[ib].unknown[iu].ToString("F6").PadLeft(10) + " ");
-                        }
-                        arq.Write(
-                             (pmd.Nodes[i].Bones[ib].x.ToString("F6").PadLeft(10)) + " "
-                           + (pmd.Nodes[i].Bones[ib].y.ToString("F6").PadLeft(10)) + " "
-                           + (pmd.Nodes[i].Bones[ib].z.ToString("F6").PadLeft(10)) + " "
-                           + (pmd.Nodes[i].Bones[ib].w.ToString("F6").PadLeft(10))
-                           + "\r\n");
-                    }
-                }
-                arq.WriteLine();
-
-                for (int im = 0; im < pmd.Nodes[i].Meshs.Length; im++)
-                {
-                    arq.WriteLine("Meshs[" + im + "]:");
-                    arq.WriteLine("TextureIndex:" + pmd.Nodes[i].Meshs[im].TextureIndex);
-                    arq.Write("Orders [ ");
-                    for (int io = 0; io < pmd.Nodes[i].Meshs[im].Orders.Length; io++)
-                    {
-                        arq.Write(pmd.Nodes[i].Meshs[im].Orders[io]);
-                        if (io != pmd.Nodes[i].Meshs[im].Orders.Length - 1)
-                        {
-                            arq.Write(", ");
-                        }
-                    }
-                    arq.Write(" ]\r\n");
-                    arq.Write("Vertexs: \r\n" +
-                        "Id".PadLeft(10) + " " +
-                        "x".PadLeft(10) + " " +
-                        "y".PadLeft(10) + " " +
-                        "z".PadLeft(10) + " " +
-                        "w0".PadLeft(10) + " " +
-                        "w1".PadLeft(10) + " " +
-                        "i0".PadLeft(10) + " " +
-                        "i1".PadLeft(10) + " " +
-                        "nx".PadLeft(10) + " " +
-                        "ny".PadLeft(10) + " " +
-                        "nz".PadLeft(10) + " " +
-                        "tu".PadLeft(10) + " " +
-                        "tv".PadLeft(10) + " " +
-                        "r".PadLeft(10) + " " +
-                        "g".PadLeft(10) + " " +
-                        "b".PadLeft(10) + " " +
-                        "a".PadLeft(10) + "\r\n");
-                    for (int iv = 0; iv < pmd.Nodes[i].Meshs[im].Vertexs.Length; iv++)
-                    {
-                        arq.Write((iv + "").PadLeft(10) +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].x.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].y.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].z.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].w0.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].w1.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].i0.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].i1.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].nx.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].ny.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].nz.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].tu.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].tv.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].r.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].g.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].b.ToString("F6").PadLeft(10)) + " " +
-                            (pmd.Nodes[i].Meshs[im].Vertexs[iv].a.ToString("F6").PadLeft(10)) + "\r\n");
-                    }
-
-                }
-                
-                arq.WriteLine();
-            }
-
-            arq.Close();
-
-        }
-
-
         public static void SmdCreate(PMD pmd, string baseDiretory, string baseFileName, ConfigFile configFile)
         {
             CultureInfo ci = CultureInfo.InvariantCulture;
 
-            StreamWriter SMD = new StreamWriter(baseDiretory + baseFileName + ".smd", false);
+            StreamWriter SMD = new StreamWriter(Path.Combine(baseDiretory, baseFileName + ".smd"), false);
 
             SMD.WriteLine("version 1");
             SMD.WriteLine("nodes");
@@ -249,16 +59,16 @@ namespace RE4_PMD_Decoder
                             if (configFile.ReplaceMaterialNameByTextureName)
                             {
 
-                                string TextureName = pmd.Materials[pmd.Nodes[g].Meshs[im].TextureIndex].TextureName;
+                                string TextureName = pmd.Materials[pmd.Nodes[g].Meshs[im].TextureIndex].TextureName.ToLowerInvariant();
                                 if (TextureName == null || TextureName.Length == 0)
                                 {
-                                    TextureName = PMD_MATERIAL_NULL;
+                                    TextureName = CONSTS.PMD_MATERIAL_NULL;
                                 }
                                 SMD.WriteLine(TextureName);
                             }
                             else 
                             {
-                                SMD.WriteLine(PMD_MATERIAL_ + pmd.Nodes[g].Meshs[im].TextureIndex.ToString("D3"));
+                                SMD.WriteLine(CONSTS.PMD_MATERIAL_ + pmd.Nodes[g].Meshs[im].TextureIndex.ToString("D3"));
                             }   
                             
                         }
@@ -331,18 +141,19 @@ namespace RE4_PMD_Decoder
             }
 
             SMD.WriteLine("end");
-            SMD.WriteLine("//##RE4_PMD_Decoder##");
-            SMD.WriteLine($"//##Version {Program.VERSION}##");
+            SMD.WriteLine("// github.com/JADERLINK/RE4-2007-PMD-TOOL");
+            SMD.WriteLine("// RE4_2007_PMD_TOOL By JADERLINK");
+            SMD.Write($"// Version {Program.VERSION}");
             SMD.Close();
 
         }
 
-
         public static void ObjCreate(PMD pmd, string baseDiretory, string baseFileName, ConfigFile configFile)
         {
-            StreamWriter obj = new StreamWriter(baseDiretory + baseFileName + ".obj", false);
-            obj.WriteLine("##RE4_PMD_Decoder##");
-            obj.WriteLine($"##Version {Program.VERSION}##");
+            StreamWriter obj = new StreamWriter(Path.Combine(baseDiretory, baseFileName + ".obj"), false);
+            obj.WriteLine("# github.com/JADERLINK/RE4-2007-PMD-TOOL");
+            obj.WriteLine("# RE4_2007_PMD_TOOL By JADERLINK");
+            obj.WriteLine($"# Version {Program.VERSION}");
             obj.WriteLine("");
 
             obj.WriteLine("mtllib " + baseFileName + ".mtl");
@@ -352,30 +163,28 @@ namespace RE4_PMD_Decoder
 
             for (int g = 0; g < pmd.Nodes.Length; g++)
             {
-              
+                obj.WriteLine("g " + pmd.NodeGroupNames[g].Replace(" ", "_"));
+
                 for (int im = 0; im < pmd.Nodes[g].Meshs.Length; im++)
                 {
                     if (pmd.Nodes[g].Meshs[im].Orders.Length != 0)
                     {
-                        obj.WriteLine("g " + pmd.NodeGroupNames[g] + "#" + PMD_MATERIAL_ + pmd.Nodes[g].Meshs[im].TextureIndex.ToString("D3"));
-
                         if (configFile.ReplaceMaterialNameByTextureName)
                         {
-                            string TextureName = pmd.Materials[pmd.Nodes[g].Meshs[im].TextureIndex].TextureName;
+                            string TextureName = pmd.Materials[pmd.Nodes[g].Meshs[im].TextureIndex].TextureName.ToLowerInvariant();
                             if (TextureName == null || TextureName.Length == 0)
                             {
-                                TextureName = PMD_MATERIAL_NULL;
+                                TextureName = CONSTS.PMD_MATERIAL_NULL;
                             }
                             obj.WriteLine("usemtl " + TextureName);
                         }
                         else
                         {
-                            obj.WriteLine("usemtl " + PMD_MATERIAL_ + pmd.Nodes[g].Meshs[im].TextureIndex.ToString("D3"));
+                            obj.WriteLine("usemtl " + CONSTS.PMD_MATERIAL_ + pmd.Nodes[g].Meshs[im].TextureIndex.ToString("D3"));
                         }
                         
                         for (int iv = 0; iv < pmd.Nodes[g].Meshs[im].Vertexs.Length; iv++)
                         {
-
 
                             string v = "v " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].x).ToString("f9", CultureInfo.InvariantCulture)
                                       + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].y).ToString("f9", CultureInfo.InvariantCulture)
@@ -419,128 +228,6 @@ namespace RE4_PMD_Decoder
 
             obj.Close();
         }
-
-        public static void MtlCreate(PMD pmd, string baseDiretory, string baseFileName, ConfigFile configFile)
-        {
-
-            StreamWriter MTLtext = new FileInfo(baseDiretory + baseFileName + ".mtl").CreateText();
-            MTLtext.WriteLine("##RE4_PMD_Decoder##");
-            MTLtext.WriteLine($"##Version {Program.VERSION}##");
-            MTLtext.WriteLine("");
-
-            HashSet<string> materialNames = new HashSet<string>(pmd.Materials.Length);
-
-            for (int i = 0; i < pmd.Materials.Length; i++)
-            {
-                string TextureName = pmd.Materials[i].TextureName;
-                if (TextureName == null || TextureName.Length == 0)
-                {
-                    TextureName = PMD_MATERIAL_NULL;
-                }
-
-                string MaterialName = PMD_MATERIAL_ + i.ToString("D3");
-
-                if (configFile.ReplaceMaterialNameByTextureName)
-                {
-                    MaterialName = TextureName;
-                }
-
-                if (!materialNames.Contains(MaterialName))
-                {
-
-                    MTLtext.WriteLine("");
-                    MTLtext.WriteLine("newmtl " + MaterialName);
-                    MTLtext.WriteLine("Ka 1.000 1.000 1.000");
-                    MTLtext.WriteLine("Kd 1.000 1.000 1.000");
-                    MTLtext.WriteLine("Ks 0.000 0.000 0.000");
-                    MTLtext.WriteLine("Ns 0");
-                    MTLtext.WriteLine("d 1");
-                    MTLtext.WriteLine("Tr 1");
-                    MTLtext.WriteLine("map_Kd " + TextureName);
-                    MTLtext.WriteLine("");
-
-                    materialNames.Add(MaterialName);
-                }
-            }
-            MTLtext.Close();
-        }
-
-        public static void IdxPmdCreate(PMD pmd, string baseDiretory, string baseFileName, ConfigFile configFile) 
-        {
-            StreamWriter idx = new StreamWriter(baseDiretory + baseFileName + ".idxpmd", false);
-            idx.WriteLine(":##RE4_PMD_Decoder##");
-            idx.WriteLine($":##Version {Program.VERSION}##");
-            idx.WriteLine("");
-
-
-            idx.WriteLine("CompressVertices:True");
-            idx.WriteLine("IsScenarioPmd:" + (pmd.ObjRefBones.Count == 0));
-
-
-            idx.WriteLine();
-            idx.WriteLine(": ## Bones ##");
-            idx.WriteLine("ObjFileUseBone:0");
-            idx.WriteLine(": BonesCount in decimal value");
-            idx.WriteLine("BonesCount:" + pmd.SkeletonBoneParents.Length.ToString());
-            idx.WriteLine(": BoneLines");
-            for (int i = 0; i < pmd.SkeletonBoneParents.Length; i++)
-            {
-                idx.WriteLine("BoneLine_" + i + "_Nome:" + pmd.SkeletonBoneNames[i]);
-                idx.WriteLine("BoneLine_" + i + "_Parent:" + pmd.SkeletonBoneParents[i]);
-                idx.Write("BoneLine_" + i + "_Data:");
-                for (int ii = 0; ii < pmd.SkeletonBoneData[i].Length; ii++)
-                {
-                    idx.Write(" " + pmd.SkeletonBoneData[i][ii].ToString("F9", CultureInfo.InvariantCulture));
-                }
-                idx.Write("\r\n");
-            }
-
-
-            idx.WriteLine();
-            idx.WriteLine(": ## Groups ##");
-            idx.WriteLine(": GroupsCount in decimal value");
-            idx.WriteLine("GroupsCount:" + pmd.Nodes.Length.ToString());
-            for (int i = 0; i < pmd.Nodes.Length; i++)
-            {
-                idx.Write("Group_" + i + ":" + pmd.NodeGroupNames[i] +"?" + pmd.Nodes[i].SkeletonIndex + "?");
-
-                for (int im = 0; im < pmd.Nodes[i].Meshs.Length; im++)
-                {
-                    idx.Write(PMD_MATERIAL_ + pmd.Nodes[i].Meshs[im].TextureIndex.ToString("D3"));
-                    if (im < pmd.Nodes[i].Meshs.Length -1)
-                    {
-                        idx.Write("?");
-                    }
-                }
-                idx.Write("\r\n");
-            }
-
-
-            idx.WriteLine();
-            idx.WriteLine("LoadColorsFromObjFile: " + configFile.UseColorsInObjFile);
-            idx.WriteLine("UseMtlFile: " + !configFile.ReplaceMaterialNameByTextureName);
-            idx.WriteLine("UseMaterialLines: " + false.ToString());
-
-            idx.WriteLine();
-            idx.WriteLine(": ## Materials ##");
-            for (int i = 0; i < pmd.Materials.Length; i++)
-            {
-                string TextureName = pmd.Materials[i].TextureName;
-                if (TextureName == null || TextureName.Length == 0)
-                {
-                    TextureName = PMD_MATERIAL_NULL;
-                }
-
-                idx.Write("MaterialLine?" + PMD_MATERIAL_ + i.ToString("D3") + "?" + TextureName + ": ");
-                for (int f = 0; f < pmd.Materials[i].TextureData.Length; f++)
-                {
-                    idx.Write(pmd.Materials[i].TextureData[f].ToString("F9", CultureInfo.InvariantCulture) + " ");
-                }
-                idx.Write(pmd.Materials[i].TextureUnknown.ToString() + "\r\n");
-            }
-
-            idx.Close();
-        }
-
+  
     }
 }

@@ -17,7 +17,7 @@
 
 struct Material{
 	float data[17];
-	s32 unknown;
+	s32 textureEnable;
 	s32 textureNameLenght;
 	char TextureName[textureNameLenght];
 };
