@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ConfigFile.cs" />
     <Compile Include="CONSTS.cs" />
+    <Compile Include="FloatExtensions.cs" />
     <Compile Include="MaterialParser.cs" />
     <Compile Include="OutputDebug.cs" />
     <Compile Include="OutputFiles.cs" />

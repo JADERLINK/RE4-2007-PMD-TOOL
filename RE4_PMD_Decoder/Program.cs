@@ -10,7 +10,7 @@ namespace RE4_2007_PMD_EXTRACT
 {
     public static class Program
     {
-        public const string VERSION = "B.1.0.1.2";
+        public const string VERSION = "B.1.0.13 (2024-03-30)";
 
         static void Main(string[] args)
         {

@@ -6,13 +6,14 @@ Translate from Portuguese Brazil
 Esses programas são uma versão refeita da versão do "magnum29" do programa "Re4 PMD to SMD model exporter" que foi escrito em "perl".
 <br> A maior diferença com a verão dele, é a possibilidade da compressão de vértices, possibilitando arquivos .pmd menores.
 
-**Update B.1.0.1.2b**
+**Update B.1.0.13**
+<br>Agora, o programa, ao gerar os arquivos .obj e .smd, não terá mais os zeros não significativos dos números, mudança feita para gerar arquivos menores.
 
-Corrigido erro no código ao fazer a leitura do arquivo .idxpmdbone no repack;
+**Update B.1.0.1.2b**
+<br>Corrigido erro no código ao fazer a leitura do arquivo .idxpmdbone no repack;
 
 **Update B.1.0.1.2**
-
-Update de melhorias, agora serão criados os arquivos .idxpmdmaterial e .idxpmdbone; 
+<br>Update de melhorias, agora serão criados os arquivos .idxpmdmaterial e .idxpmdbone; 
 <br>agora, ao fazer repack a ordem das meches é definida pelo nome do material/grupo;
 
  ## RE4_2007_PMD_EXTRACT.exe
@@ -115,4 +116,4 @@ Encontra-se no RE4_PMD_Repack, código modificado, as modificações podem ser v
 No source code, disponibilizei o arquivo RE4_PMD.hexpat, que é um arquivo para ser usado no programa "[ImHex](https://imhex.werwolv.net/)", serve para visualizar a estrutura do arquivo Pmd.
 
 **At.te: JADERLINK**
-<br>2024-02-25
+<br>2024-03-30

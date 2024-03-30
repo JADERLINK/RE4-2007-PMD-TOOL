@@ -13,8 +13,6 @@ namespace RE4_2007_PMD_EXTRACT
     {
         public static void SmdCreate(PMD pmd, string baseDiretory, string baseFileName, ConfigFile configFile)
         {
-            CultureInfo ci = CultureInfo.InvariantCulture;
-
             StreamWriter SMD = new StreamWriter(Path.Combine(baseDiretory, baseFileName + ".smd"), false);
 
             SMD.WriteLine("version 1");
@@ -33,9 +31,9 @@ namespace RE4_2007_PMD_EXTRACT
             for (int i = 0; i < pmd.SkeletonBoneData.Length; i++)
             {
                 SMD.WriteLine(i.ToString() + "  " +
-                     pmd.SkeletonBoneData[i][7].ToString("F9", ci) + " " +
-                   (pmd.SkeletonBoneData[i][9] * -1).ToString("F9", ci) + " " +
-                     pmd.SkeletonBoneData[i][8].ToString("F9", ci) + "  0.000000000 0.000000000 0.000000000");
+                     pmd.SkeletonBoneData[i][7].ToFloatString() + " " +
+                   (pmd.SkeletonBoneData[i][9] * -1).ToFloatString() + " " +
+                     pmd.SkeletonBoneData[i][8].ToFloatString() + "  0.0 0.0 0.0");
 
             }
 
@@ -85,16 +83,16 @@ namespace RE4_2007_PMD_EXTRACT
                         }
 
 
-                        string Fixed_x = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].x).ToString("F9", ci);
-                        string Fixed_y = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].y).ToString("F9", ci);
-                        string Fixed_z = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].z * -1).ToString("F9", ci);
+                        string Fixed_x = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].x).ToFloatString();
+                        string Fixed_y = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].y).ToFloatString();
+                        string Fixed_z = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].z * -1).ToFloatString();
 
-                        string Fixed_nx = pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].nx.ToString("F9", ci);
-                        string Fixed_ny = pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].ny.ToString("F9", ci);
-                        string Fixed_nz = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].nz * -1).ToString("F9", ci);
+                        string Fixed_nx = pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].nx.ToFloatString();
+                        string Fixed_ny = pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].ny.ToFloatString();
+                        string Fixed_nz = (pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].nz * -1).ToFloatString();
 
-                        string Fixed_tu = pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].tu.ToString("F9", ci);
-                        string Fixed_tv = ((pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].tv - 1) * -1).ToString("F9", ci);
+                        string Fixed_tu = pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].tu.ToFloatString();
+                        string Fixed_tv = ((pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].tv - 1) * -1).ToFloatString();
 
                         string res = pmd.Nodes[g].SkeletonIndex.ToString() + " " +
                             Fixed_x + " " +
@@ -117,7 +115,7 @@ namespace RE4_2007_PMD_EXTRACT
                             res += 0.ToString() + " ";
                         }
 
-                        res += pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].w0.ToString("F9", ci);
+                        res += pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].w0.ToFloatString();
 
                         if (links == 2)
                         {
@@ -131,7 +129,7 @@ namespace RE4_2007_PMD_EXTRACT
                                 res += " " + 0.ToString();
                             }
 
-                            res += " " + pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].w1.ToString("F9", ci);
+                            res += " " + pmd.Nodes[g].Meshs[im].Vertexs[pmd.Nodes[g].Meshs[im].Orders[iv]].w1.ToFloatString();
                         }
 
                         SMD.WriteLine(res);
@@ -186,26 +184,26 @@ namespace RE4_2007_PMD_EXTRACT
                         for (int iv = 0; iv < pmd.Nodes[g].Meshs[im].Vertexs.Length; iv++)
                         {
 
-                            string v = "v " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].x).ToString("f9", CultureInfo.InvariantCulture)
-                                      + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].y).ToString("f9", CultureInfo.InvariantCulture)
-                                      + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].z).ToString("f9", CultureInfo.InvariantCulture);
+                            string v = "v " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].x).ToFloatString()
+                                      + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].y).ToFloatString()
+                                      + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].z).ToFloatString();
 
                             if (configFile.UseColorsInObjFile)
                             {
-                                v += " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].r).ToString("f9", CultureInfo.InvariantCulture)
-                                   + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].g).ToString("f9", CultureInfo.InvariantCulture)
-                                   + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].b).ToString("f9", CultureInfo.InvariantCulture)
-                                   + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].a).ToString("f9", CultureInfo.InvariantCulture);
+                                v += " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].r).ToFloatString()
+                                   + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].g).ToFloatString()
+                                   + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].b).ToFloatString()
+                                   + " " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].a).ToFloatString();
                             }
                             obj.WriteLine(v);
 
-                            obj.WriteLine("vn " + pmd.Nodes[g].Meshs[im].Vertexs[iv].nx.ToString("f9", CultureInfo.InvariantCulture)
-                               + " " + pmd.Nodes[g].Meshs[im].Vertexs[iv].ny.ToString("f9", CultureInfo.InvariantCulture)
-                               + " " + pmd.Nodes[g].Meshs[im].Vertexs[iv].nz.ToString("f9", CultureInfo.InvariantCulture)
+                            obj.WriteLine("vn " + pmd.Nodes[g].Meshs[im].Vertexs[iv].nx.ToFloatString()
+                               + " " + pmd.Nodes[g].Meshs[im].Vertexs[iv].ny.ToFloatString()
+                               + " " + pmd.Nodes[g].Meshs[im].Vertexs[iv].nz.ToFloatString()
                                );
 
-                            obj.WriteLine("vt " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].tu).ToString("f9", CultureInfo.InvariantCulture)
-                              + " " + ((pmd.Nodes[g].Meshs[im].Vertexs[iv].tv - 1) * -1).ToString("f9", CultureInfo.InvariantCulture)
+                            obj.WriteLine("vt " + (pmd.Nodes[g].Meshs[im].Vertexs[iv].tu).ToFloatString()
+                              + " " + ((pmd.Nodes[g].Meshs[im].Vertexs[iv].tv - 1) * -1).ToFloatString()
                               );
                         }
 
