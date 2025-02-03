@@ -17,9 +17,25 @@ namespace RE4_2007_PMD_REPACK
             // load .obj file
             var objLoaderFactory = new ObjLoader.Loader.Loaders.ObjLoaderFactory();
             var objLoader = objLoaderFactory.Create();
-            var streamReader = new StreamReader(new FileInfo(objPath).OpenRead(), Encoding.ASCII);
-            ObjLoader.Loader.Loaders.LoadResult arqObj = objLoader.Load(streamReader);
-            streamReader.Close();
+            StreamReader streamReader = null;
+            ObjLoader.Loader.Loaders.LoadResult arqObj = null;
+
+            try
+            {
+                streamReader = new StreamReader(objPath, Encoding.ASCII);
+                arqObj = objLoader.Load(streamReader);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (streamReader != null)
+                {
+                    streamReader.Close();
+                }
+            }
 
             //lista de materiais usados no modelo
             HashSet<string> ModelMaterials = new HashSet<string>();

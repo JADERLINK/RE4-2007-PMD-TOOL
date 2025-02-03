@@ -1,10 +1,14 @@
 # RE4-2007-PMD-TOOL
-Extract and repack RE4 pmd files
+Extract and repack RE4 PMD files
 
-Translate from Portuguese Brazil
+**Translate from Portuguese Brazil**
 
 Esses programas são uma versão refeita da versão do "magnum29" do programa "Re4 PMD to SMD model exporter" que foi escrito em "perl".
-<br> A maior diferença com a verão dele, é a possibilidade da compressão de vértices, possibilitando arquivos .pmd menores.
+<br> A maior diferença com a verão dele, é a possibilidade da compressão de vértices, possibilitando arquivos PMD menores.
+
+**Update B.1.1.0**
+<br> Melhoria: melhorado a velocidade do repack, agora é muito rápido fazer o repack.
+<br> E foram feitas melhorias gerais no código;
 
 **Update B.1.0.13**
 <br>Agora, o programa, ao gerar os arquivos .obj e .smd, não terá mais os zeros não significativos dos números, mudança feita para gerar arquivos menores.
@@ -110,10 +114,10 @@ A escala dos arquivo Pmd da pasta xfile, são armazenado de forma a ser 100x men
 ## Código de terceiro:
 
 [ObjLoader by chrisjansson](https://github.com/chrisjansson/ObjLoader):
-Encontra-se no RE4_PMD_Repack, código modificado, as modificações podem ser vistas aqui: [link](https://github.com/JADERLINK/ObjLoader).
+Encontra-se no RE4_2007_PMD_TOOL/CjClutter.ObjLoader.Loader, código modificado, as modificações podem ser vistas aqui: [link](https://github.com/JADERLINK/ObjLoader).
 
 ## RE4_PMD.hexpat
 No source code, disponibilizei o arquivo RE4_PMD.hexpat, que é um arquivo para ser usado no programa "[ImHex](https://imhex.werwolv.net/)", serve para visualizar a estrutura do arquivo Pmd.
 
 **At.te: JADERLINK**
-<br>2024-03-30
+<br>2025-02-03

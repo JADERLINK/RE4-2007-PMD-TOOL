@@ -9,14 +9,14 @@ namespace RE4_2007_PMD_REPACK
 {
     class Program
     {
-        public const string VERSION = "B.1.0.13 (2024-03-30)";
+        public const string VERSION = "B.1.1.0 (2025-02-03)";
 
         static void Main(string[] args)
         {
             Console.WriteLine("# github.com/JADERLINK/RE4-2007-PMD-TOOL");
             Console.WriteLine("# youtube.com/@JADERLINK");
             Console.WriteLine("# RE4_2007_PMD_TOOL (REPACK) By JADERLINK");
-            Console.WriteLine($"# Version {Program.VERSION}");
+            Console.WriteLine($"# Version {VERSION}");
             Console.WriteLine("# Created from Re4 SMD to PMD converter by magnum29 (perl)");
 
             if (args.Length == 0)
@@ -39,15 +39,15 @@ namespace RE4_2007_PMD_REPACK
                 }
                 else
                 {
-                    Console.WriteLine("Wrong file");
+                    Console.WriteLine("Wrong file!");
                 }
             }
             else
             {
-                Console.WriteLine("The file does not exist");
+                Console.WriteLine("The file does not exist!");
             }
 
-            Console.WriteLine("End");
+            Console.WriteLine("Finished!!!");
 
         }
 
@@ -81,7 +81,7 @@ namespace RE4_2007_PMD_REPACK
                     {
                         if (!File.Exists(materialPath))
                         {
-                            Console.WriteLine(new FileInfo(materialPath).Name + " does not exist");
+                            Console.WriteLine(new FileInfo(materialPath).Name + " does not exist!");
                             return;
                         }
                         else 
@@ -95,7 +95,7 @@ namespace RE4_2007_PMD_REPACK
                     {
                         if (!File.Exists(mtlPath))
                         {
-                            Console.WriteLine(new FileInfo(mtlPath).Name + " does not exist");
+                            Console.WriteLine(new FileInfo(mtlPath).Name + " does not exist!");
                             return;
                         }
                         else 
@@ -109,7 +109,7 @@ namespace RE4_2007_PMD_REPACK
                     {
                         if (!File.Exists(bonePath))
                         {
-                            Console.WriteLine(new FileInfo(bonePath).Name + " does not exist");
+                            Console.WriteLine(new FileInfo(bonePath).Name + " does not exist!");
                             return;
                         }
                         else 
@@ -148,7 +148,7 @@ namespace RE4_2007_PMD_REPACK
             }
             else
             {
-                Console.WriteLine(new FileInfo(idxPmdPath).Name + " does not exist");
+                Console.WriteLine(new FileInfo(idxPmdPath).Name + " does not exist!");
             }
 
 

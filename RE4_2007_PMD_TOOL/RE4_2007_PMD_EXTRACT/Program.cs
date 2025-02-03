@@ -10,14 +10,16 @@ namespace RE4_2007_PMD_EXTRACT
 {
     public static class Program
     {
-        public const string VERSION = "B.1.0.13 (2024-03-30)";
+        public const string VERSION = "B.1.1.0 (2025-02-03)";
 
         static void Main(string[] args)
         {
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+
             Console.WriteLine("# github.com/JADERLINK/RE4-2007-PMD-TOOL");
             Console.WriteLine("# youtube.com/@JADERLINK");
             Console.WriteLine("# RE4_2007_PMD_TOOL (EXTRACT) By JADERLINK");
-            Console.WriteLine($"# Version {Program.VERSION}");
+            Console.WriteLine($"# Version {VERSION}");
             Console.WriteLine("# Created from Re4 PMD to SMD model exporter by magnum29 (perl)");
 
             if (args.Length == 0)
@@ -95,16 +97,15 @@ namespace RE4_2007_PMD_EXTRACT
                 }
                 else
                 {
-                    Console.WriteLine("Wrong file");
+                    Console.WriteLine("Wrong file!");
                 }
             }
             else
             {
-                Console.WriteLine("The file does not exist");
+                Console.WriteLine("The file does not exist!");
             }
 
-            Console.WriteLine("End");
-
+            Console.WriteLine("Finished!!!");
         }
     }
 }

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // As informações gerais sobre um assembly são controladas por
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
 // associadas a um assembly.
-[assembly: AssemblyTitle("RE4_2007_PMD_REPACK")]
-[assembly: AssemblyDescription("RE4_2007_PMD_REPACK by JADERLINK")]
+[assembly: AssemblyTitle("RE4_2007_PMD_EXTRACT")]
+[assembly: AssemblyDescription("RE4_2007_PMD_EXTRACT by JADERLINK")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("JADERLINK")]
-[assembly: AssemblyProduct("RE4_2007_PMD_REPACK")]
-[assembly: AssemblyCopyright("Copyright © JADERLINK 2024")]
+[assembly: AssemblyProduct("RE4_2007_PMD_EXTRACT")]
+[assembly: AssemblyCopyright("Copyright © JADERLINK 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // O GUID a seguir será destinado à ID de typelib se este projeto for exposto para COM
-[assembly: Guid("f4543505-d61b-4a73-ab7d-29fbe99732b2")]
+[assembly: Guid("4ead672d-a792-4b05-8ef6-f6e7206cf5d0")]
 
 // As informações da versão de um assembly consistem nos quatro valores a seguir:
 //

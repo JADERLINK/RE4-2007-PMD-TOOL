@@ -15,8 +15,25 @@ namespace RE4_2007_PMD_REPACK
             out FinalBoneLine[] bones)
         {
             //carrega o arquivo smd;
-            StreamReader stream = new StreamReader(new FileInfo(smdPath).OpenRead(), Encoding.ASCII);
-            SMD_READER_API.SMD smd = SMD_READER_API.SmdReader.Reader(stream);
+            StreamReader stream = null;
+            SMD_READER_LIB.SMD smd = null;
+
+            try
+            {
+                stream = new StreamReader(smdPath, Encoding.ASCII);
+                smd = SMD_READER_LIB.SmdReader.Reader(stream);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+            }
 
             //lista de materiais usados no modelo
             HashSet<string> ModelMaterials = new HashSet<string>();
@@ -166,13 +183,13 @@ namespace RE4_2007_PMD_REPACK
             bones = GetBoneLines(smd);
         }
 
-        private static FinalBoneLine[] GetBoneLines(SMD_READER_API.SMD smd)
+        private static FinalBoneLine[] GetBoneLines(SMD_READER_LIB.SMD smd)
         {
             int maxBone = 0;
 
             Dictionary<int, FinalBoneLine> bones = new Dictionary<int, FinalBoneLine>();
 
-            SMD_READER_API.Time time = (from tt in smd.Times
+            SMD_READER_LIB.Time time = (from tt in smd.Times
                                         where tt.ID == 0
                                         select tt).FirstOrDefault();
 
@@ -191,7 +208,7 @@ namespace RE4_2007_PMD_REPACK
 
                 if (time != null)
                 {
-                    SMD_READER_API.Skeleton skeleton = (from ss in time.Skeletons
+                    SMD_READER_LIB.Skeleton skeleton = (from ss in time.Skeletons
                                                         where ss.BoneID == boneId
                                                         select ss).FirstOrDefault();
                     if (skeleton != null)
@@ -199,6 +216,8 @@ namespace RE4_2007_PMD_REPACK
                         bonePos.X = skeleton.PosX;
                         bonePos.Y = skeleton.PosZ;
                         bonePos.Z = skeleton.PosY * -1;
+
+                        if (bonePos.Z == 0f * -1f) { bonePos.Z = 0; }
                     }
                 }
 
